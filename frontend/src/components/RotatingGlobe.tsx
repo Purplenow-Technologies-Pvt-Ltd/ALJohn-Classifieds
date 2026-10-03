@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-const createAzureMapTexture = () => {
+const createGoldMapTexture = () => {
   const canvas = document.createElement('canvas')
   canvas.width = 2048
   canvas.height = 1024
@@ -14,55 +14,47 @@ const createAzureMapTexture = () => {
   }
 
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-  gradient.addColorStop(0, '#0c4d8a')
-  gradient.addColorStop(0.25, '#0d6bbd')
-  gradient.addColorStop(0.55, '#1d9bf0')
-  gradient.addColorStop(0.8, '#65d2ff')
-  gradient.addColorStop(1, '#0c2f5d')
+  gradient.addColorStop(0, '#0757a6')
+  gradient.addColorStop(0.5, '#087bd2')
+  gradient.addColorStop(1, '#063878')
   ctx.fillStyle = gradient
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-  const continentShapes = [
-    { x: 280, y: 250, w: 240, h: 136, rotation: -0.42 },
-    { x: 520, y: 330, w: 180, h: 110, rotation: 0.3 },
-    { x: 720, y: 250, w: 210, h: 120, rotation: -0.18 },
-    { x: 1010, y: 290, w: 240, h: 140, rotation: 0.12 },
-    { x: 1220, y: 240, w: 220, h: 120, rotation: -0.35 },
-    { x: 1460, y: 340, w: 200, h: 110, rotation: 0.2 },
-    { x: 1690, y: 280, w: 180, h: 110, rotation: -0.3 },
-    { x: 900, y: 620, w: 280, h: 140, rotation: 0.1 },
-    { x: 1310, y: 640, w: 240, h: 140, rotation: -0.2 },
+  const continents: [number, number][][] = [
+    [[-168, 70], [-151, 72], [-140, 69], [-132, 57], [-125, 51], [-124, 42], [-117, 33], [-111, 31], [-108, 24], [-98, 19], [-91, 18], [-86, 13], [-82, 9], [-78, 8], [-77, 18], [-82, 23], [-80, 29], [-75, 35], [-70, 44], [-61, 47], [-54, 52], [-59, 58], [-68, 61], [-72, 68], [-91, 73], [-108, 75], [-125, 73], [-143, 71], [-157, 72]],
+    [[-81, 12], [-74, 10], [-66, 11], [-59, 7], [-51, 3], [-47, -7], [-40, -14], [-45, -23], [-51, -30], [-54, -38], [-62, -52], [-69, -56], [-74, -47], [-72, -34], [-77, -19], [-80, -5]],
+    [[-53, 82], [-43, 83], [-34, 78], [-24, 73], [-31, 65], [-42, 60], [-51, 63], [-58, 70]],
+    [[-11, 36], [-9, 44], [-5, 50], [2, 52], [5, 58], [13, 55], [18, 59], [27, 57], [32, 51], [39, 49], [42, 43], [34, 36], [27, 36], [22, 40], [15, 38], [10, 42], [3, 41], [-1, 37]],
+    [[32, 72], [48, 71], [58, 67], [72, 70], [87, 72], [102, 70], [116, 74], [132, 70], [150, 61], [166, 60], [179, 65], [177, 52], [161, 48], [151, 43], [143, 38], [134, 34], [127, 30], [120, 23], [112, 21], [106, 10], [99, 7], [93, 13], [87, 21], [79, 27], [72, 22], [66, 25], [60, 29], [54, 27], [48, 30], [43, 36], [38, 41], [34, 48], [29, 55]],
+    [[-17, 37], [-5, 36], [10, 37], [20, 32], [32, 31], [35, 22], [43, 12], [51, 11], [49, 2], [42, -3], [39, -12], [33, -18], [29, -29], [20, -35], [16, -30], [12, -18], [9, -5], [2, 5], [-5, 4], [-12, 10], [-16, 18], [-17, 28]],
+    [[35, 31], [45, 29], [55, 25], [58, 19], [51, 16], [49, 12], [43, 12], [39, 17]],
+    [[68, 24], [77, 30], [87, 27], [92, 22], [88, 15], [82, 8], [78, 7], [73, 15]],
+    [[96, 21], [105, 22], [111, 17], [119, 14], [123, 8], [117, 1], [110, -5], [105, -2], [102, 7]],
+    [[130, 32], [136, 35], [142, 42], [145, 44], [143, 36], [138, 33]],
+    [[113, -11], [130, -12], [143, -17], [153, -27], [150, -38], [140, -39], [130, -34], [119, -26], [114, -19]],
+    [[47, -13], [50, -16], [49, -25], [46, -24]],
+    [[-180, -72], [-150, -75], [-120, -73], [-90, -76], [-60, -72], [-30, -75], [0, -70], [30, -74], [60, -72], [90, -76], [120, -73], [150, -75], [180, -72], [180, -90], [-180, -90]],
   ]
 
-  continentShapes.forEach(({ x, y, w, h, rotation }) => {
-    ctx.save()
-    ctx.translate(x, y)
-    ctx.rotate(rotation)
+  continents.forEach((points) => {
     ctx.beginPath()
-    ctx.moveTo(-w * 0.5, h * 0.12)
-    ctx.bezierCurveTo(-w * 0.42, -h * 0.5, w * 0.2, -h * 0.5, w * 0.5, -h * 0.08)
-    ctx.bezierCurveTo(w * 0.46, h * 0.38, w * 0.12, h * 0.52, -w * 0.18, h * 0.46)
-    ctx.bezierCurveTo(-w * 0.42, h * 0.32, -w * 0.52, h * 0.22, -w * 0.5, h * 0.12)
+    points.forEach(([longitude, latitude], index) => {
+      const x = ((longitude + 180) / 360) * canvas.width
+      const y = ((90 - latitude) / 180) * canvas.height
+      if (index === 0) ctx.moveTo(x, y)
+      else ctx.lineTo(x, y)
+    })
     ctx.closePath()
-    const fill = ctx.createLinearGradient(0, -h, 0, h)
-    fill.addColorStop(0, '#e0f7ff')
-    fill.addColorStop(0.35, '#89d5ff')
-    fill.addColorStop(0.7, '#1e9bdf')
-    fill.addColorStop(1, '#005ba6')
+    const fill = ctx.createLinearGradient(0, 100, 0, canvas.height * 0.8)
+    fill.addColorStop(0, '#f7df91')
+    fill.addColorStop(0.45, '#d8a93d')
+    fill.addColorStop(1, '#9b6820')
     ctx.fillStyle = fill
     ctx.fill()
-    ctx.lineWidth = 8
-    ctx.strokeStyle = 'rgba(7, 60, 110, 0.55)'
+    ctx.lineWidth = 2
+    ctx.strokeStyle = 'rgba(255, 224, 145, 0.75)'
     ctx.stroke()
-    ctx.restore()
   })
-
-  const glow = ctx.createRadialGradient(canvas.width * 0.5, canvas.height * 0.45, 160, canvas.width * 0.5, canvas.height * 0.45, 1200)
-  glow.addColorStop(0, 'rgba(212, 245, 255, 0.7)')
-  glow.addColorStop(0.45, 'rgba(87, 166, 255, 0.38)')
-  glow.addColorStop(1, 'rgba(10, 50, 90, 0.12)')
-  ctx.fillStyle = glow
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   const texture = new THREE.CanvasTexture(canvas)
   texture.colorSpace = THREE.SRGBColorSpace
@@ -91,11 +83,11 @@ export default function RotatingGlobe() {
     scene.add(earthGroup)
 
     const earthMaterial = new THREE.MeshPhongMaterial({
-      color: 0x9ad8ff,
-      emissive: new THREE.Color(0x2f7fd6),
-      emissiveIntensity: 0.52,
-      specular: new THREE.Color(0xeaf9ff),
-      shininess: 34,
+      color: 0x4a90e2,
+      emissive: new THREE.Color(0x0750b5),
+      emissiveIntensity: 0.58,
+      specular: new THREE.Color(0x9bcfff),
+      shininess: 24,
     })
     const earthGeometry = new THREE.SphereGeometry(1.62, 128, 128)
     const earth = new THREE.Mesh(earthGeometry, earthMaterial)
@@ -187,10 +179,10 @@ export default function RotatingGlobe() {
       return { group: ringGroup, material: ringMaterial, speed }
     })
 
-    const ambientLight = new THREE.AmbientLight(0x344862, 0.42)
+    const ambientLight = new THREE.AmbientLight(0x174b83, 0.5)
     scene.add(ambientLight)
 
-    const sunlight = new THREE.DirectionalLight(0xfff2dc, 2.4)
+    const sunlight = new THREE.DirectionalLight(0xd6eaff, 1.3)
     sunlight.position.set(-3.8, 1.6, 5)
     scene.add(sunlight)
 
@@ -207,9 +199,9 @@ export default function RotatingGlobe() {
     scene.add(stars)
 
     let disposed = false
-    const azureMapTexture = createAzureMapTexture()
-    azureMapTexture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8)
-    earthMaterial.map = azureMapTexture
+    const goldMapTexture = createGoldMapTexture()
+    goldMapTexture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8)
+    earthMaterial.map = goldMapTexture
     earthMaterial.needsUpdate = true
 
     const resize = () => {
@@ -315,7 +307,7 @@ export default function RotatingGlobe() {
       earthMaterial.dispose()
       markerGeometry.dispose()
       markerMaterial.dispose()
-      azureMapTexture.dispose()
+      goldMapTexture.dispose()
       atmosphereGeometry.dispose()
       atmosphereMaterial.dispose()
       orbitGeometry.dispose()

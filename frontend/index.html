@@ -10,6 +10,32 @@
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      header a[href="/login"] {
+        background-color: #2563eb;
+        background-image: none;
+        border-color: #2563eb;
+        color: #fff;
+      }
+
+      header a[href="/login"]:hover {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+      }
+
+      .globe-shell[aria-label="3D Earth globe"] {
+        perspective: 700px;
+      }
+
+      .globe-shell[aria-label="3D Earth globe"] canvas {
+        filter: saturate(1.8) hue-rotate(5deg) contrast(1.08);
+      }
+
+      .marketplace-grid a.marketplace-card[href="/category/free-gifts"] {
+        display: none !important;
+      }
+    </style>
+    <script defer src="/globe-map.js"></script>
     <title>Golden Traders — Classifieds & Content Portal</title>
     <script type="module" crossorigin src="/assets/index-Ivelz_Ve.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-D1ecTKjY.css">
