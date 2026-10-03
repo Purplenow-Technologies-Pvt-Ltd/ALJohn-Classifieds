@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-const createGoldenMapTexture = () => {
+const createAzureMapTexture = () => {
   const canvas = document.createElement('canvas')
   canvas.width = 2048
   canvas.height = 1024
@@ -14,10 +14,11 @@ const createGoldenMapTexture = () => {
   }
 
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-  gradient.addColorStop(0, '#b77b1e')
-  gradient.addColorStop(0.32, '#d7a33b')
-  gradient.addColorStop(0.72, '#a96a14')
-  gradient.addColorStop(1, '#704811')
+  gradient.addColorStop(0, '#0c4d8a')
+  gradient.addColorStop(0.25, '#0d6bbd')
+  gradient.addColorStop(0.55, '#1d9bf0')
+  gradient.addColorStop(0.8, '#65d2ff')
+  gradient.addColorStop(1, '#0c2f5d')
   ctx.fillStyle = gradient
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -44,21 +45,22 @@ const createGoldenMapTexture = () => {
     ctx.bezierCurveTo(-w * 0.42, h * 0.32, -w * 0.52, h * 0.22, -w * 0.5, h * 0.12)
     ctx.closePath()
     const fill = ctx.createLinearGradient(0, -h, 0, h)
-    fill.addColorStop(0, '#f4d27b')
-    fill.addColorStop(0.5, '#d8a33d')
-    fill.addColorStop(1, '#7a4a16')
+    fill.addColorStop(0, '#e0f7ff')
+    fill.addColorStop(0.35, '#89d5ff')
+    fill.addColorStop(0.7, '#1e9bdf')
+    fill.addColorStop(1, '#005ba6')
     ctx.fillStyle = fill
     ctx.fill()
     ctx.lineWidth = 8
-    ctx.strokeStyle = 'rgba(109, 60, 12, 0.6)'
+    ctx.strokeStyle = 'rgba(7, 60, 110, 0.55)'
     ctx.stroke()
     ctx.restore()
   })
 
   const glow = ctx.createRadialGradient(canvas.width * 0.5, canvas.height * 0.45, 160, canvas.width * 0.5, canvas.height * 0.45, 1200)
-  glow.addColorStop(0, 'rgba(255, 244, 205, 0.74)')
-  glow.addColorStop(0.4, 'rgba(236, 183, 78, 0.4)')
-  glow.addColorStop(1, 'rgba(99, 64, 20, 0.08)')
+  glow.addColorStop(0, 'rgba(212, 245, 255, 0.7)')
+  glow.addColorStop(0.45, 'rgba(87, 166, 255, 0.38)')
+  glow.addColorStop(1, 'rgba(10, 50, 90, 0.12)')
   ctx.fillStyle = glow
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -89,11 +91,11 @@ export default function RotatingGlobe() {
     scene.add(earthGroup)
 
     const earthMaterial = new THREE.MeshPhongMaterial({
-      color: 0xdcb15d,
-      emissive: new THREE.Color(0x9b6920),
-      emissiveIntensity: 0.42,
-      specular: new THREE.Color(0xfff1c5),
-      shininess: 32,
+      color: 0x9ad8ff,
+      emissive: new THREE.Color(0x2f7fd6),
+      emissiveIntensity: 0.52,
+      specular: new THREE.Color(0xeaf9ff),
+      shininess: 34,
     })
     const earthGeometry = new THREE.SphereGeometry(1.62, 128, 128)
     const earth = new THREE.Mesh(earthGeometry, earthMaterial)
@@ -102,8 +104,8 @@ export default function RotatingGlobe() {
 
     const markerGeometry = new THREE.SphereGeometry(0.027, 16, 16)
     const markerMaterial = new THREE.MeshPhongMaterial({
-      color: 0xf7c75c,
-      emissive: 0x8b5a00,
+      color: 0x7dd3fc,
+      emissive: 0x1d4ed8,
       emissiveIntensity: 0.8,
       shininess: 90,
     })
@@ -142,7 +144,7 @@ export default function RotatingGlobe() {
           float rim = pow(fresnel, 2.2);
           float highlight = pow(fresnel, 8.0) * 0.3;
           float opacity = clamp(smoothstep(0.08, 0.95, rim) * 0.9 + highlight, 0.0, 1.0);
-          vec3 glow = vec3(0.97, 0.82, 0.46);
+          vec3 glow = vec3(0.5, 0.82, 1.0);
           gl_FragColor = vec4(glow, opacity);
         }
       `,
@@ -205,9 +207,9 @@ export default function RotatingGlobe() {
     scene.add(stars)
 
     let disposed = false
-    const goldenMapTexture = createGoldenMapTexture()
-    goldenMapTexture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8)
-    earthMaterial.map = goldenMapTexture
+    const azureMapTexture = createAzureMapTexture()
+    azureMapTexture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8)
+    earthMaterial.map = azureMapTexture
     earthMaterial.needsUpdate = true
 
     const resize = () => {
@@ -313,7 +315,7 @@ export default function RotatingGlobe() {
       earthMaterial.dispose()
       markerGeometry.dispose()
       markerMaterial.dispose()
-      goldenMapTexture.dispose()
+      azureMapTexture.dispose()
       atmosphereGeometry.dispose()
       atmosphereMaterial.dispose()
       orbitGeometry.dispose()
