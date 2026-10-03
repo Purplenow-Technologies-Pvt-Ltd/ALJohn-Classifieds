@@ -123,7 +123,7 @@ export default function Navbar() {
           ) : (
             <Link
               to="/login"
-              className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 text-sm font-medium text-white hover:bg-white/10"
+              className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 px-3.5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:brightness-110"
             >
               <User className="h-4 w-4" /> Sign In
             </Link>
@@ -167,7 +167,7 @@ export default function Navbar() {
               <Link
                 to="/login"
                 onClick={() => setOpen(false)}
-                className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-center text-sm font-medium text-white"
+                className="rounded-lg bg-gradient-to-r from-blue-600 to-sky-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-lg shadow-blue-500/30"
               >
                 Sign In
               </Link>
