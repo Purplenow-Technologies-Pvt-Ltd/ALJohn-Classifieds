@@ -31,7 +31,6 @@ const mainCategories = [
   { title: 'Events', subtitle: 'WORKSHOPS & HAPPENINGS', route: '/events', info: 'Meetups and showcases' },
   { title: 'Stock Exchange', subtitle: 'MARKET & TRADING', route: '/category/stock-exchange', info: 'Stocks, markets and exchange information' },
   { title: 'Service Stations', subtitle: 'SERVICES & LOCATIONS', route: '/category/service-stations', info: 'Find available service stations' },
-  { title: 'Free Gifts', subtitle: 'GIFTS & OFFERS', route: '/category/free-gifts', info: 'Free gifts and special offers' },
 ] as const
 
 const serviceHighlights = [
