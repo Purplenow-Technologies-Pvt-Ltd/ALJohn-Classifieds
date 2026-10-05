@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build and run classifieds frontend",
+			"type": "shell",
+			"command": "Set-Location -LiteralPath '.\\CMS Classifieds\\frontend'; .\\node_modules\\.bin\\vite.cmd build; if ($LASTEXITCODE -eq 0) { .\\node_modules\\.bin\\vite.cmd preview --host 127.0.0.1 }",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
