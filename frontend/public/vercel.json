@@ -1,0 +1,1 @@
+{"rewrites":[{"source":"/((?!assets/|globe-map.js|land.json).*)","destination":"/index.html"}]}

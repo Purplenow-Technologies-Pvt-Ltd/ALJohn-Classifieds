@@ -42,6 +42,65 @@ const serviceHighlights = [
   { label: 'Money Transfer', description: 'Direct transfers with local support.', icon: Rocket },
 ]
 
+const liveMarketCards = [
+  {
+    title: 'Buyers Active',
+    value: '1,284',
+    change: '+18.4%',
+    detail: 'New purchase requests this week',
+  },
+  {
+    title: 'Verified Sellers',
+    value: '82%',
+    change: '+6.1%',
+    detail: 'Profiles recently checked and approved',
+  },
+  {
+    title: 'Buyers Active',
+    value: '1,284',
+    change: '+18.4%',
+    detail: 'New purchase requests this week',
+  },
+  {
+    title: 'Verified Sellers',
+    value: '82%',
+    change: '+6.1%',
+    detail: 'Profiles recently checked and approved',
+  },
+] as const
+
+const topAdvertisementPosts = [
+  {
+    title: 'Luxury Apartment',
+    price: '$2,400/mo',
+    tag: 'Property',
+    detail: '2 Bedroom • Downtown View • Full Setup',
+    location: 'Downtown',
+    image:
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Family SUV',
+    price: '$18,500',
+    tag: 'Vehicle',
+    detail: 'Auto • 2022 • Inspected & Ready',
+    location: 'Auto Hub',
+    image:
+      'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Executive Desk',
+    price: '$690',
+    tag: 'Furniture',
+    detail: 'Office • Premium Finish • Delivery Included',
+    location: 'Office Park',
+    image:
+      'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80',
+  },
+] as const
+
+const marketAds = [...topAdvertisementPosts] as const
+
 const perks = [
   {
     icon: ShieldCheck,
@@ -112,27 +171,46 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hero-overlay-right">
-              <div className="hero-overlay-panel">
-                <span className="hero-overlay-label">Live market</span>
-                <h2>Market overview</h2>
-                <div className="hero-mini-grid">
-                  <div className="mini-stat">
-                    <strong>1,284</strong>
-                    <span>New</span>
-                  </div>
-                  <div className="mini-stat">
-                    <strong>82%</strong>
-                    <span>Verified</span>
-                  </div>
-                  <div className="mini-stat">
-                    <strong>4.9/5</strong>
-                    <span>Rating</span>
-                  </div>
-                </div>
+            <div className="hero-sponsored-column">
+              <div className="top-advertisement-grid hero-top-ads">
+                {marketAds.map(({ title, price, tag, location, detail, image }) => (
+                  <article key={`${title}-${tag}`} className="top-advertisement-card">
+                    <div className="top-advertisement-card__badge">Sponsored Post</div>
+                    <div className="top-advertisement-card__media">
+                      <img src={image} alt={title} />
+                      <span>{tag}</span>
+                    </div>
+                    <div className="top-advertisement-card__content">
+                      <div className="top-advertisement-card__row">
+                        <span>{title}</span>
+                        <strong>{price}</strong>
+                      </div>
+                      <p>{location}</p>
+                      <small>{detail}</small>
+                    </div>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-6 pt-2 sm:px-6 lg:px-8">
+        <div className="live-market-strip">
+          {liveMarketCards.map(({ title, value, change, detail }) => (
+            <div key={title} className="live-market-card">
+              <div className="live-market-card__header">
+                <span className="live-market-card__tag">Live Market</span>
+                <span className="live-market-card__trend">{change}</span>
+              </div>
+              <div className="live-market-card__body">
+                <h3>{title}</h3>
+                <strong>{value}</strong>
+              </div>
+              <p>{detail}</p>
+            </div>
+          ))}
         </div>
       </section>
 

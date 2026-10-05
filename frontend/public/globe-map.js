@@ -1,5 +1,8 @@
 (function () {
   var SELECTOR = '.globe-shell[aria-label="3D Earth globe"]'
+  if (document.querySelector('[data-gold-map="true"]') || document.querySelector(SELECTOR + ' canvas')) {
+    return
+  }
   var SPHERE_RATIO = 0.502
   var TILT = (-18 * Math.PI) / 180
   var SPIN_SECONDS = 24
@@ -49,8 +52,12 @@
       return { x: x, y: y2, z: z2 }
     }
 
+    var startTime = null
+
     function draw(time) {
-      var rot = reduced ? 0 : -((time / 1000) / SPIN_SECONDS) * Math.PI * 2
+      if (startTime === null) startTime = time
+      var elapsed = time - startTime
+      var rot = reduced ? 0 : -((elapsed / 1000) / SPIN_SECONDS) * Math.PI * 2
       var r = (size * dpr) / 2
       ctx.setTransform(1, 0, 0, 1, 0, 0)
       ctx.clearRect(0, 0, canvas.width, canvas.height)
